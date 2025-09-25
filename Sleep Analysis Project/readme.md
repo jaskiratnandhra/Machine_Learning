@@ -1,8 +1,9 @@
 # 😴 Sleep Health Predictor
 
-An **interactive machine learning app** built with **Streamlit** that predicts sleep health outcomes (classification) or estimates continuous values (regression), depending on your dataset.  
+An **interactive machine learning app** built with **Streamlit** that predicts sleep health outcomes (**classification**) or estimates continuous values (**regression**) — it automatically chooses the right type based on your target column.
 
-Designed to be **easy for non-technical users** while also being **technically robust** under the hood. Just upload your data, click **Train**, and start making predictions.
+- **For anyone:** simple 3 steps → *Choose target → Train → Predict (single or batch)*  
+- **For engineers:** robust preprocessing, schema alignment, rare-class handling, and clear project structure.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10+-blue" />
@@ -15,37 +16,48 @@ Designed to be **easy for non-technical users** while also being **technically r
 
 ## ✨ Features
 
-✅ **Layman-friendly interface**  
-Simple 3-step workflow: *Choose target → Train → Predict (single or batch)*  
+- **Layman-friendly interface**  
+  Three steps only: *Choose target → Train → Predict (single / batch)*  
 
-✅ **Automatic task detection**  
-- If your target is categorical → trains a **Random Forest Classifier**  
-- If your target is numeric → trains a **Random Forest Regressor**  
+- **Automatic task detection**  
+  - Categorical target → **RandomForestClassifier**  
+  - Numeric/continuous target → **RandomForestRegressor**  
 
-✅ **Robust training pipeline**  
-- Handles missing values (numeric imputation, categorical mode)  
-- Scales numerics & one-hot encodes categoricals  
-- Drops ultra-rare classes (<2 rows) to prevent training errors  
-- Aligns prediction input with training schema (no “missing column” issues)  
+- **Robust training pipeline**  
+  - Imputation (median/mode)  
+  - Scaling (StandardScaler)  
+  - One-hot encoding for categoricals  
+  - Drops ultra-rare classes (< 2 rows) to prevent training errors  
+  - Saves both model & schema (`sleep_model.joblib`)  
 
-✅ **Prediction options**  
-- **Single Entry:** Fill in a form → instant prediction  
-- **Batch Mode:** Upload a CSV → download results with predictions appended  
+- **Safe schema alignment**  
+  - Adds missing columns as `NA` so imputers handle them  
+  - Drops extra/unexpected columns  
+  - Prevents “missing column” errors  
 
-✅ **Technical safeguards**  
-- Schema alignment ensures consistency  
-- Model + schema saved as `sleep_model.joblib`  
-- Works even if dataset contains ID-like columns (`Person ID`, `User ID`)  
+- **Prediction options**  
+  - **Single Entry**: Fill in a simple form → instant prediction  
+  - **Batch Upload**: Upload CSV → download predictions with appended `prediction` column  
 
 ---
 
-## 🏗️ Architecture
+## ⚡ Quickstart
 
-```mermaid
-flowchart LR
-    A[CSV Data] --> B[Preprocessing]
-    B -->|Imputation / Scaling / Encoding| C[Model Training]
-    C -->|Random Forest (clf/reg)| D[Trained Model Bundle]
-    D --> E[Streamlit App]
-    E -->|Form Inputs| F[Single Prediction]
-    E -->|CSV Upload| G[Batch Prediction]
+```bash
+# 1) Clone
+git clone https://github.com/<your-username>/<your-repo>.git
+cd <your-repo>
+
+# 2) (Optional) Create virtual environment
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+
+# 3) Install
+pip install -r requirements.txt
+
+# 4) Add your data
+# Place your CSV at data/sleep.csv (default path used in app.py)
+
+# 5) Run
+streamlit run app.py
