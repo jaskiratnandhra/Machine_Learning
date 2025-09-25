@@ -1,157 +1,51 @@
-😴 Sleep Health Predictor
+# 😴 Sleep Health Predictor
 
-An interactive machine learning app built with Streamlit that predicts sleep health outcomes or estimates continuous values (depending on your dataset).
-Designed to be super easy for anyone to use — just upload your data, click Train, and start making predictions.
+An **interactive machine learning app** built with **Streamlit** that predicts sleep health outcomes (classification) or estimates continuous values (regression), depending on your dataset.  
 
-<p align="center"> <img src="https://img.shields.io/badge/Python-3.10+-blue" /> <img src="https://img.shields.io/badge/Streamlit-App-red" /> <img src="https://img.shields.io/badge/ScikitLearn-ML-yellowgreen" /> </p>
-🚀 Features
+Designed to be **easy for non-technical users** while also being **technically robust** under the hood. Just upload your data, click **Train**, and start making predictions.
 
-Layman-friendly UI
-No technical jargon — just three simple steps:
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue" />
+  <img src="https://img.shields.io/badge/Streamlit-App-red" />
+  <img src="https://img.shields.io/badge/ScikitLearn-ML-green" />
+  <img src="https://img.shields.io/badge/Pandas-Data-orange" />
+</p>
 
-Choose the target column
+---
 
-Train the model
+## ✨ Features
 
-Get results (single entry or batch upload)
+✅ **Layman-friendly interface**  
+Simple 3-step workflow: *Choose target → Train → Predict (single or batch)*  
 
-Automatic task detection
+✅ **Automatic task detection**  
+- If your target is categorical → trains a **Random Forest Classifier**  
+- If your target is numeric → trains a **Random Forest Regressor**  
 
-If your target is categorical → trains a classifier
+✅ **Robust training pipeline**  
+- Handles missing values (numeric imputation, categorical mode)  
+- Scales numerics & one-hot encodes categoricals  
+- Drops ultra-rare classes (<2 rows) to prevent training errors  
+- Aligns prediction input with training schema (no “missing column” issues)  
 
-If your target is numeric → trains a regressor
+✅ **Prediction options**  
+- **Single Entry:** Fill in a form → instant prediction  
+- **Batch Mode:** Upload a CSV → download results with predictions appended  
 
-Robust training pipeline
+✅ **Technical safeguards**  
+- Schema alignment ensures consistency  
+- Model + schema saved as `sleep_model.joblib`  
+- Works even if dataset contains ID-like columns (`Person ID`, `User ID`)  
 
-Preprocessing: imputation, scaling, one-hot encoding
+---
 
-Handles rare classes gracefully (drops labels with <2 samples)
+## 🏗️ Architecture
 
-Uses Random Forest (classification or regression)
-
-Prediction modes
-
-Single entry: Fill out a form → see a result instantly
-
-Batch upload: Upload a CSV → download predictions file
-
-Safe schema alignment
-Automatically aligns input columns with training schema (no “missing column” errors, even if Person ID or other identifiers are present).
-
-🧰 Tech Stack
-
-Python 3.10+
-
-Streamlit → interactive app
-
-Pandas → data handling
-
-Scikit-learn → preprocessing & ML models
-
-Joblib → model persistence
-
-Plotly (optional) → quick visualizations in EDA
-
-📂 Project Structure
-Sleep-Health-Predictor/
-│
-├── app.py                 # Streamlit app (UI + prediction logic)
-├── requirements.txt       # Python dependencies
-├── data/
-│   └── sleep.csv          # Dataset (replace with your own)
-└── src/
-    ├── __init__.py
-    ├── preprocess.py      # Feature engineering & preprocessing
-    └── train.py           # Training logic (classification/regression)
-
-⚡ Getting Started
-1. Clone the repo
-git clone https://github.com/your-username/sleep-health-predictor.git
-cd sleep-health-predictor
-
-2. Install dependencies
-pip install -r requirements.txt
-
-3. Add your dataset
-
-Place your CSV inside the data/ folder.
-
-Default file name is sleep.csv.
-
-Example columns might include:
-
-Person ID (ignored automatically)
-
-Age, Gender, Occupation
-
-Sleep Duration, Heart Rate, Stress Level
-
-Sleep Disorder (target column)
-
-4. Run the app
-streamlit run app.py
-
-🎯 Usage Walkthrough
-Step 1 — Choose target
-
-From the dropdown, pick the column you want to predict (e.g., Sleep Disorder).
-
-Step 2 — Train
-
-Click Train. The app:
-
-Splits your data into training/test sets
-
-Builds the preprocessing + model pipeline
-
-Saves the trained model into sleep_model.joblib
-
-Step 3 — Predict
-
-Single Entry: Fill in form values → get Our best guess (classification) or Estimated value (regression).
-
-Batch Upload: Upload a CSV → download predictions file with an added prediction column.
-
-📊 Example Results
-Single Entry
-Input: 
-  Age = 30
-  Sleep Duration = 6.5
-  Stress Level = High
-  Occupation = Healthcare
-Output:
-  Our best guess: Insomnia
-
-Batch Upload
-
-Input file (input.csv):
-
-Age,Sleep Duration,Stress Level,Occupation
-28,7,Low,Engineer
-42,5,High,Healthcare
-
-
-Output file (predictions.csv):
-
-Age,Sleep Duration,Stress Level,Occupation,prediction
-28,7,Low,Engineer,No Disorder
-42,5,High,Healthcare,Insomnia
-
-📸 Screenshots
-<p align="center"> <img src="docs/screenshot-train.png" width="600" /> <br/> <em>Step 2 — Training the model</em> </p> <p align="center"> <img src="docs/screenshot-predict.png" width="600" /> <br/> <em>Step 3 — Making predictions</em> </p>
-🔮 Future Improvements
-
-Add model selector (XGBoost, Logistic Regression, etc.)
-
-Add explainability (feature importance, SHAP plots)
-
-Add ROC/PR curves in the training results
-
-Deploy app to Streamlit Cloud for one-click demos
-
-🙌 Author
-
-Jaskirat Singh Nandhra
-Data Engineer • Machine Learning Enthusiast • Set Designer 🎭
-LinkedIn
- | GitHub
+```mermaid
+flowchart LR
+    A[CSV Data] --> B[Preprocessing]
+    B -->|Imputation / Scaling / Encoding| C[Model Training]
+    C -->|Random Forest (clf/reg)| D[Trained Model Bundle]
+    D --> E[Streamlit App]
+    E -->|Form Inputs| F[Single Prediction]
+    E -->|CSV Upload| G[Batch Prediction]
