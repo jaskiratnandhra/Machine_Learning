@@ -1,0 +1,6 @@
+streamlit==1.36.0
+pandas>=2.2.3,<3.0
+scikit-learn>=1.6.3
+# (optional but wise to avoid backtracking on 3.13 wheels)
+numpy>=2.1
+scipy>=1.14
