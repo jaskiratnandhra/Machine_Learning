@@ -161,3 +161,4 @@ with tabs[1]:
                 st.error(f"Batch prediction failed: {e}")
 
 st.info("Tip: If you change the dataset columns, retrain the model so it learns the new pattern.")
+    
